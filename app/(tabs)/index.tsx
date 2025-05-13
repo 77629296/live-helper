@@ -1,75 +1,92 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import * as React from 'react'
+import { Alert, ScrollView, StyleSheet } from 'react-native'
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import {
+  Button,
+  Card,
+  IconButton,
+  Paragraph,
+  Text,
+} from 'react-native-paper'
 
-export default function HomeScreen() {
+import { useExampleTheme } from '../../lib/hooks/useExampleTheme'
+import ScreenWrapper from '../ScreenWrapper'
+
+
+const CardExample = () => {
+  const { colors, isV3 } = useExampleTheme()
+  const TextComponent = isV3 ? Text : Paragraph
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    <ScreenWrapper contentContainerStyle={styles.content}>
+      <ScrollView
+        style={[styles.container, { backgroundColor: colors?.background }]}
+        contentContainerStyle={styles.content}
+      >
+        <Card style={styles.card}>
+          <Card.Title
+            title="Abandoned Ship"
+            right={(props: any) => (
+              <IconButton {...props} icon="dots-vertical" onPress={() => {
+                Alert.alert('... is Pressed')
+              }} />
+            )}
+          />
+          <Card.Content>
+            <TextComponent numberOfLines={2} variant="bodyMedium">
+              The Abandoned Ship is a wrecked ship located on Route 108 in
+              Hoenn, originally being a ship named the S.S. Cactus. The second
+              part of the ship can only be accessed by using Dive and contains
+              the Scanner. The Abandoned Ship is a wrecked ship located on Route 108 in
+              Hoenn, originally being a ship named the S.S. Cactus. The second
+              part of the ship can only be accessed by using Dive and contains
+              the Scanner.
+            </TextComponent>
+          </Card.Content>
+          <Card.Actions>
+            <Button mode="text" onPress={() => {}}>删除</Button>
+            <Button mode="text" onPress={() => {}}>编辑</Button>
+            <Button mode="text" onPress={() => {}}>开始直播</Button>
+          </Card.Actions>
+        </Card>
+      </ScrollView>
+    </ScreenWrapper>
+  )
 }
 
+CardExample.title = 'Card'
+
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+  },
+  content: {
+    padding: 4,
+  },
+  card: {
+    margin: 4,
+  },
+  chip: {
+    margin: 4,
+  },
+  preference: {
     alignItems: 'center',
-    gap: 8,
+    flexDirection: 'row',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  button: {
+    borderRadius: 12,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  customCardRadius: {
+    borderTopLeftRadius: 24,
+    borderBottomRightRadius: 24,
   },
-});
+  customCoverRadius: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 24,
+  },
+})
+
+export default CardExample

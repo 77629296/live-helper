@@ -1,45 +1,91 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Tabs, router } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import React from 'react'
+import { Appbar, Tooltip } from 'react-native-paper'
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { TabBar, TabsHeader } from '@/lib'
+import { View } from 'react-native'
+import Constants from 'expo-constants'
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const TabLayout = () => {
   return (
     <Tabs
+      tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarHideOnKeyboard: true,
+        header: (props) => <TabsHeader navProps={props} children={undefined} />,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: '首页',
+          headerRight: () => (
+            <>
+              <Tooltip title={'search'}>
+                <Appbar.Action
+                  icon="plus"
+                  onPress={() => {}}
+                />
+              </Tooltip>
+            </>
+          ),
+          tabBarIcon: (props) => (
+            <MaterialCommunityIcons
+              {...props}
+              size={24}
+              name={props.focused ? 'home' : 'home-outline'}
+            />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="interact"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: '互动',
+          header: () => (
+            <View style={styles.container}>
+              <StatusBar />
+            </View>
+          ),
+          tabBarIcon: (props) => (
+            <MaterialCommunityIcons
+              {...props}
+              size={24}
+              name={props.focused ? 'forum' : 'forum-outline'}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: '我的',
+          headerRight: () => (
+            <Tooltip title={'drawerNav'}>
+              <Appbar.Action icon="gesture-swipe" onPress={() => {}} />
+            </Tooltip>
+          ),
+          tabBarIcon: (props) => (
+            <MaterialCommunityIcons
+              {...props}
+              size={24}
+              name={props.focused ? 'account' : 'account-outline'}
+            />
+          ),
         }}
       />
     </Tabs>
-  );
+  )
 }
+
+const styles = {
+  container: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+    padding: 8,
+  },
+}
+
+export default TabLayout
