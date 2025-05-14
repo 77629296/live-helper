@@ -11,7 +11,7 @@ import { SplashScreen, Stack } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { Platform, useColorScheme } from 'react-native'
+import { useColorScheme } from 'react-native'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
 
 import { Setting, StackHeader, Themes } from '@/lib'
@@ -102,7 +102,7 @@ const RootLayoutNav = () => {
         >
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="search" options={{ title: 'search' }} />
+          <Stack.Screen name="script-edit" options={{ title: '脚本修改' }} />
           <Stack.Screen
             name="modal"
             options={{ title: 'titleModal', presentation: 'modal' }}
