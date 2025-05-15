@@ -10,8 +10,7 @@ import Themes from '@/lib/ui/styles/themes'
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    gap: 16,
-    padding: 24,
+    paddingHorizontal: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
