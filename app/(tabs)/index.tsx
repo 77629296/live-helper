@@ -5,28 +5,16 @@ import {
   Button,
   Card,
   IconButton,
-  Paragraph,
   Text,
-  List,
 } from 'react-native-paper'
-import BottomSheet, { BottomSheetMethods } from '@devvie/bottom-sheet'
 import { useExampleTheme } from '../../lib/hooks/useExampleTheme'
 import { DialogWithButtons } from '@/lib/ui/components'
-import { useRef } from 'react'
-import { Portal } from 'react-native-portalize'
 
 const Index = () => {
-  const { colors, isV3 } = useExampleTheme()
-  const TextComponent = isV3 ? Text : Paragraph
-  const sheetRefApps = useRef<BottomSheetMethods>(null)
-  const sheetRefDouyin = useRef<BottomSheetMethods>(null)
+  const { colors } = useExampleTheme()
 
   const handleDelete = () => {
     console.log('delete')
-  }
-
-  const handleBeginLive = () => {
-    sheetRefApps.current?.open()
   }
 
   return (
@@ -49,7 +37,7 @@ const Index = () => {
             )}
           />
           <Card.Content>
-            <TextComponent numberOfLines={2} variant="bodyMedium">
+            <Text numberOfLines={2} variant="bodyMedium">
               The Abandoned Ship is a wrecked ship located on Route 108 in
               Hoenn, originally being a ship named the S.S. Cactus. The second
               part of the ship can only be accessed by using Dive and contains
@@ -57,7 +45,7 @@ const Index = () => {
               108 in Hoenn, originally being a ship named the S.S. Cactus. The
               second part of the ship can only be accessed by using Dive and
               contains the Scanner.
-            </TextComponent>
+            </Text>
           </Card.Content>
           <Card.Actions>
             <DialogWithButtons
@@ -68,89 +56,15 @@ const Index = () => {
               confirm={handleDelete}
             />
 
-            <Button mode="text" onPress={() => router.push('/script-edit')}>
+            <Button mode="text" onPress={() => router.push('/script/edit')}>
               编辑
             </Button>
-            <Button mode="text" onPress={handleBeginLive}>
+            <Button mode="text" onPress={() => router.push('/account/select')}>
               开始直播
             </Button>
           </Card.Actions>
         </Card>
       </ScrollView>
-      <Portal>
-        <BottomSheet height={260} ref={sheetRefApps}>
-          <List.Item
-            title="抖音"
-            key="抖音"
-            onPress={() => {
-              sheetRefApps.current?.close()
-              sheetRefDouyin.current?.open()
-            }}
-            left={(props) => <List.Icon {...props} icon="folder" />}
-          />
-          <List.Item
-            title="练习"
-            key="练习"
-            left={(props) => <List.Icon {...props} icon="folder" />}
-          />
-          <Button
-            mode="contained"
-            style={{
-              marginLeft: 32,
-              marginRight: 32,
-              position: 'fixed',
-              bottom: 0,
-            }}
-            onPress={() => sheetRefApps.current?.close()}
-          >
-            关闭
-          </Button>
-        </BottomSheet>
-      </Portal>
-
-      <Portal>
-        <BottomSheet style={{ paddingBottom: 120 }} ref={sheetRefDouyin}>
-          <ScrollView>
-            {new Array(15).fill(5).map((item, index) => (
-              <List.Item
-                key={index}
-                title={`抖音号${index + 1}`}
-                left={(props) => <List.Icon {...props} icon="video-account" />}
-                right={(props) => [
-                  <Button
-                    key="解绑"
-                    icon="delete-outline"
-                    mode="contained-tonal"
-                    onPress={() => console.log('Pressed')}
-                  >
-                    解绑
-                  </Button>,
-                  <Button
-                    key="直播"
-                    icon="video-outline"
-                    mode="contained-tonal"
-                    style={{ marginLeft: 12 }}
-                    onPress={() => console.log('Pressed')}
-                  >
-                    直播
-                  </Button>,
-                ]}
-              />
-            ))}
-          </ScrollView>
-          <Button
-            icon="plus"
-            mode="contained"
-            style={{
-              marginLeft: 32,
-              marginRight: 32,
-            }}
-            onPress={() => sheetRefDouyin.current?.close()}
-          >
-            绑定抖音
-          </Button>
-        </BottomSheet>
-      </Portal>
     </>
   )
 }

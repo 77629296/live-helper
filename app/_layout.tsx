@@ -7,14 +7,20 @@ import {
   ThemeProvider,
 } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { SplashScreen, Stack } from 'expo-router'
+import { SplashScreen, Stack, router } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { useColorScheme } from 'react-native'
-import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
+import { useColorScheme, View } from 'react-native'
+import {
+  adaptNavigationTheme,
+  PaperProvider,
+  Appbar,
+  Tooltip,
+} from 'react-native-paper'
 
 import { Setting, StackHeader, Themes } from '@/lib'
+import Constants from 'expo-constants'
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary } from 'expo-router'
@@ -100,19 +106,60 @@ const RootLayoutNav = () => {
             ),
           }}
         >
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="script-edit" options={{ title: '脚本修改' }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+
+          {/* script */}
+          <Stack.Screen name="script/edit" options={{ title: '脚本修改' }} />
+          <Stack.Screen
+            name="script/play"
+            options={{
+              header: () => (
+                <View style={styles.container}>
+                  <StatusBar />
+                </View>
+              ),
+            }}
+          />
+
+          {/* account */}
+          <Stack.Screen
+            name="account/select"
+            options={{
+              title: '账号选择',
+              headerRight: () => (
+                <Tooltip title={'search'}>
+                  <Appbar.Action
+                    icon="plus"
+                    onPress={() => router.push('/account/bind')}
+                  />
+                </Tooltip>
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="account/bind"
+            options={{
+              title: '账号绑定',
+            }}
+          />
           <Stack.Screen
             name="modal"
             options={{ title: 'titleModal', presentation: 'modal' }}
           />
         </Stack>
       </PaperProvider>
-
       <StatusBar style="auto" />
     </ThemeProvider>
   )
+}
+
+const styles = {
+  container: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+    padding: 8,
+  },
 }
 
 export default RootLayout
